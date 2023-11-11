@@ -1,1 +1,1 @@
-# Proyecto-CS50---Gal-ctica
+# Proyecto CS50 - Galáctica
