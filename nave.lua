@@ -11,7 +11,11 @@ function Nave:new(x, y, vidas, damage, speed)
     self.ancho = self.skin:getWidth()
     self.alto = self.skin:getHeight()
     self.rotacion = - math.pi / 2
+
+    self.radioHitbox = self.ancho/2 - 10
 end
+
+
 
 function Nave:update(dt)
     -- Movimiento de la nave
@@ -69,5 +73,6 @@ function Nave:draw()
     )
 
     -- Prototipo Hitbox (28 se resta de lado y lado, 14 para volverlo a centrar)
-    love.graphics.rectangle("line", self.x - self.alto / 2, self.y - self.ancho/2 + 14, self.alto,self.ancho-28)
+    -- love.graphics.rectangle("line", self.x - self.alto / 2, self.y - self.ancho/2 + 14, self.alto,self.ancho-28)
+    love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end
