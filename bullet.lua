@@ -8,7 +8,7 @@ function Bullet:new(x,y)
     self.ancho = self.image:getWidth()
     self.alto = self.image:getHeight()
 
-    self.speed = 100
+    self.speed = 400
     self.damage = 5
     self.rango = 400
 

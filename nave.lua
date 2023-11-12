@@ -15,7 +15,24 @@ function Nave:new(x, y, vidas, damage, speed)
     self.radioHitbox = self.ancho/2 - 10
 end
 
+function Nave:checkColision(e)
+    local distancia = math.sqrt(
+        (self.x - e.x)^2 + (self.y - e.y)^2
+    )
 
+    if self.radioHitbox + e.radioHitbox > distancia then
+        return true
+    end
+
+    return false
+end
+
+function Nave:reciveDano(e, dt)
+    if self:checkColision(e) then
+        print("nave-choca-meteoro")
+        self.vidas = self.vidas - 1
+    end
+end
 
 function Nave:update(dt)
     -- Movimiento de la nave
@@ -59,6 +76,8 @@ function Nave:update(dt)
 end
 
 function Nave:draw()
+    love.graphics.print("vidas " .. self.vidas, 0,20)
+
     love.graphics.print("x " .. self.x, self.x+50,self.y+50)
     love.graphics.print("y " .. self.y, self.x+50,self.y+70)
     love.graphics.draw(

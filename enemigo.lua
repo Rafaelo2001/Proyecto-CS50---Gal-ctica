@@ -11,16 +11,10 @@ function Enemigo:new(x, y, imagen)
     self.radioHitbox = self.ancho/2 - 5
 end
 
-function Enemigo:checkColision(e)
-    local distancia = math.sqrt(
-        (self.x - e.x)^2 + (self.y - e.y)^2
-    )
 
-    if self.radioHitbox + e.radioHitbox > distancia then
-        return true
-    end
 
-    return false
+function Enemigo:update()
+    
 end
 
 function Enemigo:draw()

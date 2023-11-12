@@ -8,7 +8,7 @@ function love.load()
     require "enemigo"
         require "meteoro"
 
-    Player = Nave(200, 200, 3, 500, 300)
+    Player = Nave(200, 200, 300, 500, 300)
     Balas = {}
 
     MaxMeteo = 3
@@ -16,7 +16,9 @@ function love.load()
 
     tick.delay(
         function ()
-            table.insert(MeteoroList, Meteoro(500,10, 100, "assets/enemy/meteoro1.png"))
+            table.insert(MeteoroList, Meteoro(600,-150, 120, "assets/enemy/meteoro1.png", "d"))
+            table.insert(MeteoroList, Meteoro(750,-150, 100, "assets/enemy/meteoro1.png", "d"))
+            table.insert(MeteoroList, Meteoro(900,-150, 80, "assets/enemy/meteoro1.png", "d"))
         end
         , .5
     )
@@ -40,9 +42,9 @@ function love.update(dt)
     for i, v in ipairs(Balas) do
         v:update(dt)
 
-        for ii, m in ipairs(MeteoroList) do
+        for j, m in ipairs(MeteoroList) do
             if v:checkColision(m) then
-                table.remove(MeteoroList, ii)
+                table.remove(MeteoroList, j)
                 table.remove(Balas, i)
             end
         end
@@ -55,7 +57,8 @@ function love.update(dt)
     end
 
     for i, v in ipairs(MeteoroList) do
-        v:update(Player, dt)
+        v:update(dt)
+        Player:reciveDano(v, dt)
     end
 end
 
