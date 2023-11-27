@@ -76,7 +76,8 @@ function Nave:update(dt)
 end
 
 function Nave:draw()
-    love.graphics.print("vidas " .. self.vidas, 0,20)
+    love.graphics.print("vida " .. self.vidas, 0,20)
+    love.graphics.rectangle("fill", 30,20, self.vidas,20)
 
     love.graphics.print("x " .. self.x, self.x+50,self.y+50)
     love.graphics.print("y " .. self.y, self.x+50,self.y+70)

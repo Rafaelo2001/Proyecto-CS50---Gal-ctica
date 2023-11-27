@@ -1,7 +1,26 @@
 Meteoro = Enemigo:extend()
 
-function Meteoro:new(x,y, speed, imagen, movement_type)
-    Meteoro.super.new(self, x,y, imagen)
+function Meteoro:new(x,y, speed, meteoro_type, movement_type)
+    local imagen, value
+
+        if meteoro_type == 'big' or meteoro_type == 'b' then
+            imagen = "assets/enemy/meteoroBig.png"
+            value = 300
+        elseif meteoro_type == 'medium' or meteoro_type == 'm' then
+            imagen = "assets/enemy/meteoroMedium.png"
+            value = 150
+        elseif meteoro_type == 'medium_gris' or meteoro_type == 'mg' then
+            imagen = "assets/enemy/meteoroMediumGris.png"
+            value = 150
+        elseif meteoro_type == 'small' or meteoro_type == 's' then
+            imagen = "assets/enemy/meteoroSmall.png"
+            value = 50
+        elseif meteoro_type == 'tiny' or meteoro_type == 't' then
+            imagen = "assets/enemy/meteoroTiny.png"
+            value = 10
+        end
+
+    Meteoro.super.new(self, x,y, value, imagen)
     self.speed = speed
     self.rotacion = 0 + love.math.random() * 4
 

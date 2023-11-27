@@ -12,7 +12,7 @@ function Bullet:new(x,y)
     self.damage = 5
     self.rango = 400
 
-    self.radioHitbox = self.ancho/2 - 10
+    self.radioHitbox = self.ancho/2
 end
 
 function Bullet:checkColision(e)

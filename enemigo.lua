@@ -1,8 +1,9 @@
 Enemigo = Class:extend()
 
-function Enemigo:new(x, y, imagen)
+function Enemigo:new(x, y, value, imagen)
     self.x = x
     self.y = y
+    self.value = value
 
     self.imagen = love.graphics.newImage(imagen)
     self.ancho = self.imagen:getWidth()
