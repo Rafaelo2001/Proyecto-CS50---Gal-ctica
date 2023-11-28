@@ -1,6 +1,7 @@
 local tick = require "librerias.tick"
 local anchoPantalla = love.graphics.getWidth()
 local altoPatalla = love.graphics.getHeight()
+-- 720 x 600
 
 function love.load()
     Class = require "librerias.classic"
@@ -11,32 +12,53 @@ function love.load()
         require "meteoro"
     require "coin"
 
-    Player = Nave(200, 200, 300, 500, 300)
+    Player = Nave(200, altoPatalla/2, 300, 500, 300)
     Score = 0
     Balas = {}
 
     MaxMeteo = 3
     MeteoroList = {}
 
+    SizeTypes = {"m", "mg"}
+    MoveTypes = {"r","d", "di"}
+
+    tick.recur(
+        function ()
+            table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,3)]))
+            table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,3)]))
+            table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,3)]))
+        end
+        ,
+        love.math.random(0.4,1.2)
+    )
+
     tick.delay(
         function ()
-            table.insert(MeteoroList, Meteoro(anchoPantalla + 100, altoPatalla/2, 100, "s", "r"))
-            table.insert(MeteoroList, Meteoro(anchoPantalla + 250, altoPatalla/2, 100, "s", "r"))
-            table.insert(MeteoroList, Meteoro(anchoPantalla + 400, altoPatalla/2, 100, "s", "r"))
+            tick.recur(
+                function ()
+                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+                end
+                ,
+                love.math.random(0.4,1.2)
+            )
         end
-        , .5
+        , 15
     )
 
     local maxCoin = 20
     CoinList = {}
 
-    for i = 1, maxCoin do
-        table.insert(CoinList, Coin(love.math.random(100,love.graphics.getWidth() - 50), love.math.random(50, love.graphics.getHeight() - 50), "s"))
+   for i = 1, maxCoin do
+        table.insert(CoinList, Coin(love.math.random(100, anchoPantalla - 50), love.math.random(50, altoPatalla - 50), "s"))
     end
+--[[
+    table.insert(CoinList, Coin(800, 300, "s"))
+    table.insert(CoinList, Coin(900, 350, "s"))]]
+     --, Coin(850, 300, "s"), Coin(900, 300, "s"), Coin(950, 300, "s")
 
     Fuente = love.graphics.newFont("assets/font/kenvector_future.ttf")
-
-    Moneda_test = Coin(500, 500, "s")
 end
 
 function love.keypressed(key)
@@ -83,13 +105,23 @@ function love.update(dt)
         c:update(dt)
 
         if Player:checkColision(c) then
-            print("Money tocao")
             Score = Score + c.value
             table.remove(CoinList, i)
         end
     end
 
-    
+    --  Eliminacion de objetos mas alla de la pantalla
+    for i, v in ipairs(MeteoroList) do
+        if v.x < -anchoPantalla or v.y < -altoPatalla or v.y > altoPatalla*2 then
+            table.remove(MeteoroList, i)
+        end
+    end
+
+    for i, v in ipairs(CoinList) do
+        if v.x < -anchoPantalla then
+            table.remove(CoinList, i)
+        end
+    end
 end
 
 function love.draw()

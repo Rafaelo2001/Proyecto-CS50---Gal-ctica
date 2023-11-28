@@ -12,15 +12,26 @@ function Coin:new(x, y, type)
 
     self.ancho = self.imagen:getWidth()
     self.alto = self.imagen:getHeight()
+    self.scalax = 1
+    self.scalay = 1
 
     self.radioHitbox = 32/2
+
+    self.modulo = 0.3
 end
 
 function Coin:update(dt)
-    self.x = self.x - 10*dt
+    self.x = self.x - 100*dt
+
+    -- Pulsacion, solo visual
+    if self.scalax >= 1.1 or self.scalax <= 0.9 then
+        self.modulo = -self.modulo
+    end
+    self.scalax = self.scalax + self.modulo*dt
+    self.scalay = self.scalay + self.modulo*dt
 end
 
 function Coin:draw()
-    love.graphics.draw(self.imagen, self.x,self.y, 0, 1,1, self.ancho/2,self.alto/2, 0,0)
+    love.graphics.draw(self.imagen, self.x,self.y, 0, self.scalax,self.scalay, self.ancho/2,self.alto/2, 0,0)
     love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end
