@@ -1,16 +1,23 @@
 Bullet = Class:extend()
 
-function Bullet:new(x,y)
+function Bullet:new(x,y, type)
     self.x = x
     self.y = y
 
-    self.image = love.graphics.newImage("assets/nave/bullet - laser1.png")
+    if type == "l1" then
+        self.image = love.graphics.newImage("assets/nave/bullet - laser1.png")
+        self.speed = 400
+        self.damage = 1
+        self.rango = 400
+    elseif type == "l2" then
+        self.image = love.graphics.newImage("assets/nave/bullet - laser2.png")
+        self.speed = 800
+        self.damage = 3
+        self.rango = 550
+    end
+
     self.ancho = self.image:getWidth()
     self.alto = self.image:getHeight()
-
-    self.speed = 400
-    self.damage = 5
-    self.rango = 400
 
     self.radioHitbox = self.ancho/2
 end

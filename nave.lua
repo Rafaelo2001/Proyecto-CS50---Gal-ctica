@@ -11,6 +11,8 @@ function Nave:new(x, y, vidas, damage, speed)
     self.ancho = self.skin:getWidth()
     self.alto = self.skin:getHeight()
     self.rotacion = - math.pi / 2
+    self.desgarroX = 0
+    self.desgarroY = 0
 
     self.radioHitbox = self.ancho/2 - 10
 end
@@ -44,9 +46,14 @@ function Nave:update(dt)
 
         if love.keyboard.isDown("s", "down") then
             self.y = self.y + 600 * dt
+            self.desgarroX = -0.1
         elseif love.keyboard.isDown("w", "up") then
             self.y = self.y - 600 * dt
+            self.desgarroX =  0.1
+        else
+            self.desgarroX = 0
         end
+
 
     -- Desplazamiento automatico a la posicion base
         if self.x > 151 then
@@ -76,8 +83,18 @@ function Nave:update(dt)
 end
 
 function Nave:draw()
-    love.graphics.print("vida " .. self.vidas, 0,20)
-    love.graphics.rectangle("fill", 30,20, self.vidas,20)
+    -- Calculos para la barra de vida
+        local iniciobar = love.graphics.newImage("assets/nave/livebar-start.png")
+        local anchoI = iniciobar:getWidth()
+
+        local middlebar = love.graphics.newImage("assets/nave/livebar-middle.png")
+        local anchoM = middlebar:getWidth()
+
+    -- Barra de Vida
+        love.graphics.print("vida " .. self.vidas, 0,20)
+        love.graphics.draw(love.graphics.newImage("assets/nave/livebar-start.png"), 30,20, 0, 1,1, 0,0, 0,0)
+        love.graphics.draw(love.graphics.newImage("assets/nave/livebar-middle.png"), 30 + anchoI,20, 0, self.vidas/9,1, 0,0, 0,0)
+        love.graphics.draw(love.graphics.newImage("assets/nave/livebar-end.png"), anchoM * self.vidas/9 + 30 + anchoI,20, 0, 1,1, 0,0, 0,0)
 
     love.graphics.print("x " .. self.x, self.x+50,self.y+50)
     love.graphics.print("y " .. self.y, self.x+50,self.y+70)
@@ -89,7 +106,7 @@ function Nave:draw()
         1,1,
         self.ancho/2,
         self.alto/2,
-        0,0
+        self.desgarroX,self.desgarroY
     )
 
     -- Prototipo Hitbox (28 se resta de lado y lado, 14 para volverlo a centrar)

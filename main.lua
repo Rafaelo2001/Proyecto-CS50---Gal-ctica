@@ -11,8 +11,10 @@ function love.load()
     require "enemigo"
         require "meteoro"
     require "coin"
+    require "meteorosDisplay"
 
     Player = Nave(200, altoPatalla/2, 300, 500, 300)
+    Orden = Orden()
     Score = 0
     Balas = {}
 
@@ -24,47 +26,62 @@ function love.load()
 
     tick.recur(
         function ()
-            table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,3)]))
-            table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,3)]))
-            table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,3)]))
+            Orden:uno() 
         end
         ,
         love.math.random(0.4,1.2)
     )
 
-    tick.delay(
-        function ()
-            tick.recur(
-                function ()
-                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
-                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
-                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
-                end
-                ,
-                love.math.random(0.4,1.2)
-            )
-        end
-        , 15
-    )
+    -- tick.delay(
+    --     function ()
+    --         tick.recur(
+    --             function ()
+    --                 table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+    --                 table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+    --                 table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+    --             end
+    --             ,
+    --             love.math.random(0.4,1.2)
+    --         )
+    --     end
+    --     , 15
+    -- )
 
     local maxCoin = 20
     CoinList = {}
 
-   for i = 1, maxCoin do
-        table.insert(CoinList, Coin(love.math.random(100, anchoPantalla - 50), love.math.random(50, altoPatalla - 50), "s"))
-    end
---[[
-    table.insert(CoinList, Coin(800, 300, "s"))
-    table.insert(CoinList, Coin(900, 350, "s"))]]
-     --, Coin(850, 300, "s"), Coin(900, 300, "s"), Coin(950, 300, "s")
+    tick.recur(
+        function ()
+            table.insert(CoinList, Coin(anchoPantalla + love.math.random(100,200), love.math.random(0, altoPatalla), "s"))
+        end
+        , 0.5
+    )
+
+     
+--    for i = 1, maxCoin do
+--         table.insert(CoinList, Coin(love.math.random(100, anchoPantalla - 50), love.math.random(50, altoPatalla - 50), "s"))
+--     end
+
+--     table.insert(CoinList, Coin(800, 300, "s"))
+--     table.insert(CoinList, Coin(900, 350, "s"))
+--      , Coin(850, 300, "s"), Coin(900, 300, "s"), Coin(950, 300, "s")
 
     Fuente = love.graphics.newFont("assets/font/kenvector_future.ttf")
 end
 
 function love.keypressed(key)
-    if #Balas < 7 then
-        if key == "z" or key == "return" then
-            table.insert(Balas, Bullet(Player.x, Player.y))
+    if Score < 1500 then
+        if #Balas < 7 then
+            if key == "z" or key == "return" then
+                table.insert(Balas, Bullet(Player.x, Player.y, "l1"))
+            end
+        end
+    elseif Score >= 1500 then
+        if #Balas < 11 then
+            if key == "z" or key == "return" then
+                table.insert(Balas, Bullet(Player.x, Player.y, "l2"))
+                print("l2")
+            end
         end
     end
 end
@@ -79,9 +96,13 @@ function love.update(dt)
 
         for j, m in ipairs(MeteoroList) do
             if v:checkColision(m) then
-                Score = Score + m.value
-                table.remove(MeteoroList, j)
+                m.vida = m.vida - v.damage
                 table.remove(Balas, i)
+                if m.vida <= 0 then
+                    Score = Score + m.value
+                    table.remove(MeteoroList, j)
+                    table.remove(Balas, i)
+                end
             end
         end
 
