@@ -82,20 +82,22 @@ function Nave:update(dt)
         end
 end
 
-function Nave:draw()
+function Nave:drawLife()
     -- Calculos para la barra de vida
-        local iniciobar = love.graphics.newImage("assets/nave/livebar-start.png")
-        local anchoI = iniciobar:getWidth()
+    local iniciobar = love.graphics.newImage("assets/nave/livebar-start.png")
+    local anchoI = iniciobar:getWidth()
 
-        local middlebar = love.graphics.newImage("assets/nave/livebar-middle.png")
-        local anchoM = middlebar:getWidth()
+    local middlebar = love.graphics.newImage("assets/nave/livebar-middle.png")
+    local anchoM = middlebar:getWidth()
 
-    -- Barra de Vida
-        love.graphics.print("vida " .. self.vidas, 0,20)
-        love.graphics.draw(love.graphics.newImage("assets/nave/livebar-start.png"), 30,20, 0, 1,1, 0,0, 0,0)
-        love.graphics.draw(love.graphics.newImage("assets/nave/livebar-middle.png"), 30 + anchoI,20, 0, self.vidas/9,1, 0,0, 0,0)
-        love.graphics.draw(love.graphics.newImage("assets/nave/livebar-end.png"), anchoM * self.vidas/9 + 30 + anchoI,20, 0, 1,1, 0,0, 0,0)
+-- Barra de Vida
+    love.graphics.print("vida " .. self.vidas, 0,20)
+    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-start.png"), 30,20, 0, 1,1, 0,0, 0,0)
+    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-middle.png"), 30 + anchoI,20, 0, self.vidas/9,1, 0,0, 0,0)
+    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-end.png"), anchoM * self.vidas/9 + 30 + anchoI,20, 0, 1,1, 0,0, 0,0)
+end
 
+function Nave:draw()
     love.graphics.print("x " .. self.x, self.x+50,self.y+50)
     love.graphics.print("y " .. self.y, self.x+50,self.y+70)
     love.graphics.draw(

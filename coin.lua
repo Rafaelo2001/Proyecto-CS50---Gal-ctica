@@ -1,8 +1,9 @@
 Coin = Class:extend()
 
-function Coin:new(x, y, type)
+function Coin:new(x, y, velocidad, type)
     self.x = x
     self.y = y
+    self.velocidad = velocidad
 
     if type == "s" then
         self.imagen = love.graphics.newImage("assets/star_dust.png")
@@ -21,7 +22,7 @@ function Coin:new(x, y, type)
 end
 
 function Coin:update(dt)
-    self.x = self.x - 100*dt
+    self.x = self.x - self.velocidad*dt
 
     -- Pulsacion, solo visual
     if self.scalax >= 1.1 or self.scalax <= 0.9 then
@@ -33,5 +34,5 @@ end
 
 function Coin:draw()
     love.graphics.draw(self.imagen, self.x,self.y, 0, self.scalax,self.scalay, self.ancho/2,self.alto/2, 0,0)
-    love.graphics.circle("line", self.x,self.y, self.radioHitbox)
+    -- love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end

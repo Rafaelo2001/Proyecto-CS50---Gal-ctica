@@ -6,7 +6,7 @@ function Meteoro:new(x,y, speed, meteoro_type, movement_type)
         if meteoro_type == 'big' or meteoro_type == 'b' then
             imagen = "assets/enemy/meteoroBig.png"
             value = 300
-            self.vida = 5
+            self.vida = 10
         elseif meteoro_type == 'medium' or meteoro_type == 'm' then
             imagen = "assets/enemy/meteoroMedium.png"
             value = 150
@@ -14,7 +14,7 @@ function Meteoro:new(x,y, speed, meteoro_type, movement_type)
         elseif meteoro_type == 'medium_gris' or meteoro_type == 'mg' then
             imagen = "assets/enemy/meteoroMediumGris.png"
             value = 150
-            self.vida = 3
+            self.vida = 4
         elseif meteoro_type == 'small' or meteoro_type == 's' then
             imagen = "assets/enemy/meteoroSmall.png"
             value = 50

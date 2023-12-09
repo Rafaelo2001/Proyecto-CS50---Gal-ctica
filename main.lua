@@ -14,48 +14,87 @@ function love.load()
     require "meteorosDisplay"
 
     Player = Nave(200, altoPatalla/2, 300, 500, 300)
-    Orden = Orden()
+    OrdenM = Orden()
     Score = 0
     Balas = {}
 
     MaxMeteo = 3
     MeteoroList = {}
 
-    SizeTypes = {"m", "mg"}
-    MoveTypes = {"r","d", "di"}
+    SizeTypes = {"m", "mg", "b", "t"}
+    MoveTypes = {"r", "r", "r", "r", "r", "r", "d", "di"}
 
-    tick.recur(
-        function ()
-            Orden:uno() 
-        end
-        ,
-        love.math.random(0.4,1.2)
-    )
-
-    -- tick.delay(
-    --     function ()
-    --         tick.recur(
-    --             function ()
-    --                 table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
-    --                 table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
-    --                 table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
-    --             end
-    --             ,
-    --             love.math.random(0.4,1.2)
-    --         )
-    --     end
-    --     , 15
-    -- )
+    
 
     local maxCoin = 20
     CoinList = {}
 
-    tick.recur(
+    -- OrdenM:Panel6()
+
+    -- todo bien
+    OrdenM:Panel1()
+    tick.delay(
         function ()
-            table.insert(CoinList, Coin(anchoPantalla + love.math.random(100,200), love.math.random(0, altoPatalla), "s"))
-        end
-        , 0.5
+            OrdenM:Panel2()
+        end,
+        4
     )
+    tick.delay(
+        function ()
+            OrdenM:Panel3()
+        end,
+        8
+    )
+    tick.delay(
+        function ()
+            OrdenM:Panel6()
+        end,
+        10
+    )
+    tick.delay(
+        function ()
+            OrdenM:Panel4()
+        end,
+        18
+    )
+
+    tick.delay(
+        function ()
+            tick.recur(
+                function ()
+                    OrdenM:uno()
+                    OrdenM:dos()
+                end
+                ,
+                love.math.random(0.4,1.2)
+            )
+            end
+        , 23
+    )
+
+    tick.delay(
+        function ()
+            tick.recur(
+                function ()
+                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+                    table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
+                end
+                ,
+                love.math.random(0.4,1.2)
+            )
+        end
+        , 25
+    )
+
+    
+
+    -- tick.recur(
+    --     function ()
+    --         table.insert(CoinList, Coin(anchoPantalla + love.math.random(100,200), love.math.random(0, altoPatalla), "s"))
+    --     end
+    --     , 0.5
+    -- )
 
      
 --    for i = 1, maxCoin do
@@ -76,11 +115,18 @@ function love.keypressed(key)
                 table.insert(Balas, Bullet(Player.x, Player.y, "l1"))
             end
         end
-    elseif Score >= 1500 then
+    elseif Score >= 1500 and Score < 3000 then
         if #Balas < 11 then
             if key == "z" or key == "return" then
                 table.insert(Balas, Bullet(Player.x, Player.y, "l2"))
                 print("l2")
+            end
+        end
+    elseif Score >= 3000  then
+        if #Balas < 15 then
+            if key == "z" or key == "return" then
+                table.insert(Balas, Bullet(Player.x, Player.y, "l3"))
+                print("l3")
             end
         end
     end
@@ -163,4 +209,6 @@ function love.draw()
     for i, c in ipairs(CoinList) do
         c:draw()
     end
+
+    Player:drawLife()
 end
