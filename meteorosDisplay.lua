@@ -6,7 +6,7 @@ local altoPatalla = love.graphics.getHeight()
         require "meteoro"
     require "coin"
 
-    SizeTypes = {"m", "mg", "b", "t"}
+    SizeTypes = {"m", "mg", "b", "t", "s"}
     MoveTypes = {"r", "r", "r", "r", "r", "r", "d", "di"}
     Velocidades = {50, 100, 150, 200, 300}
 
@@ -19,9 +19,9 @@ local altoPatalla = love.graphics.getHeight()
 
     function Orden:dos ()
         print("bb")
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,4)], MoveTypes[love.math.random(1,8)]))
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,4)], MoveTypes[love.math.random(1,8)]))
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,4)], MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
     end
 
     function Orden:Panel1()
