@@ -85,19 +85,30 @@ function Nave:update(dt)
 end
 
 function Nave:drawLife()
-    -- Calculos para la barra de vida
-    local iniciobar = love.graphics.newImage("assets/nave/livebar-start.png")
-    local anchoI = iniciobar:getWidth()
+    local inicio_bar = love.graphics.newImage("assets/nave/LB-s-Full.png")
+    local middle_bar = love.graphics.newImage("assets/nave/LB-m-Full.png")
+    local end_bar    = love.graphics.newImage("assets/nave/LB-e-Full.png")
 
-    local middlebar = love.graphics.newImage("assets/nave/livebar-middle.png")
-    local anchoM = middlebar:getWidth()
+    if self.vidas > 100 and self.vidas < 200 then
+        inicio_bar = love.graphics.newImage("assets/nave/LB-s-Medium.png")
+        middle_bar = love.graphics.newImage("assets/nave/LB-m-Medium.png")
+        end_bar    = love.graphics.newImage("assets/nave/LB-e-Medium.png")
+    elseif self.vidas <= 100 then
+        inicio_bar = love.graphics.newImage("assets/nave/LB-s-Low.png")
+        middle_bar = love.graphics.newImage("assets/nave/LB-m-Low.png")
+        end_bar    = love.graphics.newImage("assets/nave/LB-e-Low.png")
+    end
+
+    -- Calculos para la barra de vida
+    local anchoI = inicio_bar:getWidth()
+    local anchoM = middle_bar:getWidth()
 
     -- Barra de Vida
     love.graphics.printf("Energy", LiveFont, 10,11, 500)
-    --love.graphics.printf("GAME OVER",             GOFont, 0, altoPatalla/2 - 35, anchoPantalla, "center")
-    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-start.png"), 120,10, 0, 1,1, 0,0, 0,0)
-    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-middle.png"), 120 + anchoI,10, 0, self.vidas/9,1, 0,0, 0,0)
-    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-end.png"), anchoM * self.vidas/9 + 120 + anchoI,10, 0, 1,1, 0,0, 0,0)
+
+    love.graphics.draw( inicio_bar,                                  120, 10, 0,            1,1, 0,0, 0,0)
+    love.graphics.draw( middle_bar,                         120 + anchoI, 10, 0, self.vidas/9,1, 0,0, 0,0)
+    love.graphics.draw(    end_bar, anchoM * self.vidas/9 + 120 + anchoI, 10, 0,            1,1, 0,0, 0,0)
 end
 
 function Nave:draw()
@@ -115,6 +126,6 @@ function Nave:draw()
     )
 
     -- Prototipo Hitbox (28 se resta de lado y lado, 14 para volverlo a centrar)
-    -- love.graphics.rectangle("line", self.x - self.alto / 2, self.y - self.ancho/2 + 14, self.alto,self.ancho-28)
+    love.graphics.rectangle("line", self.x - self.alto / 2, self.y - self.ancho/2 + 14, self.alto,self.ancho-28)
     love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end

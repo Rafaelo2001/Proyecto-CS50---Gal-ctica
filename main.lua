@@ -1,10 +1,15 @@
+love.window.setTitle("Project Galáctica")
+
 local tick = require "librerias.tick"
 local anchoPantalla = love.graphics.getWidth()
 local altoPatalla = love.graphics.getHeight()
 -- 720 x 600
 
 function love.load()
-    GameOver = false
+    -- 0 - Start Screen
+    -- 1 - Game Screen
+    -- 2 - Game Over Screen
+    GameState = 0
     Class = require "librerias.classic"
 
     require "librerias.estrellas"
@@ -36,34 +41,37 @@ function love.load()
     -- OrdenM:Panel6()
 
     -- todo bien
-    OrdenM:Panel1()
-    tick.delay(
+    MetoeGroup = tick.group()
+
+    MetoeGroup:delay(function () OrdenM:Panel1() end,0)
+    MetoeGroup:delay(
         function ()
             OrdenM:Panel2()
         end,
         4
     )
-    tick.delay(
+    MetoeGroup:delay(
         function ()
             OrdenM:Panel3()
         end,
         8
     )
-    tick.delay(
+    MetoeGroup:delay(
         function ()
             OrdenM:Panel6()
         end,
         10
     )
-    tick.delay(
+    MetoeGroup:delay(
         function ()
             OrdenM:Panel4()
         end,
         18
     )
 
-    tick.delay(
+    MetoeGroup:delay(
         function ()
+            print("meteo ult1")
             tick.recur(
                 function ()
                     OrdenM:uno()
@@ -73,11 +81,12 @@ function love.load()
                 love.math.random(0.4,1.2)
             )
             end
-        , 23
+        , 26
     )
 
-    tick.delay(
+    MetoeGroup:delay(
         function ()
+            print("meteo ult2")
             tick.recur(
                 function ()
                     table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,2)], MoveTypes[love.math.random(1,3)]))
@@ -88,31 +97,38 @@ function love.load()
                 love.math.random(0.4,1.2)
             )
         end
-        , 25
+        , 40
     )
 
     -- Fuentes
     Fuente = love.graphics.newFont("assets/font/kenvector_future.ttf")
     GOFont = love.graphics.newFont("assets/font/kenvector_future.ttf", 35)
+
+    Logo = love.graphics.newImage("assets/main_logo.png")
 end
 
 function love.keypressed(key)
-    if Score < 1500 then
-        if #Balas < 7 then
-            if key == "z" or key == "return" then
-                table.insert(Balas, Bullet(Player.x, Player.y, "l1"))
+    if GameState == 0 and key == "space" then
+        GameState = 1
+        print("ao")
+    elseif GameState == 1 then
+        if Score < 1500 then
+            if #Balas < 7 then
+                if key == "z" or key == "return" then
+                    table.insert(Balas, Bullet(Player.x, Player.y, "l1"))
+                end
             end
-        end
-    elseif Score >= 1500 and Score < 3000 then
-        if #Balas < 11 then
-            if key == "z" or key == "return" then
-                table.insert(Balas, Bullet(Player.x, Player.y, "l2"))
+        elseif Score >= 1500 and Score < 3000 then
+            if #Balas < 11 then
+                if key == "z" or key == "return" then
+                    table.insert(Balas, Bullet(Player.x, Player.y, "l2"))
+                end
             end
-        end
-    elseif Score >= 3000  then
-        if #Balas < 15 then
-            if key == "z" or key == "return" then
-                table.insert(Balas, Bullet(Player.x, Player.y, "l3"))
+        elseif Score >= 3000  then
+            if #Balas < 15 then
+                if key == "z" or key == "return" then
+                    table.insert(Balas, Bullet(Player.x, Player.y, "l3"))
+                end
             end
         end
     end
@@ -122,9 +138,10 @@ function love.update(dt)
     tick.update(dt)
     StarUpdate(dt)
 
-    if GameOver == true then
-        -- Al activarse esta funcion, dejamos de actualizar la logica
-    else
+    if GameState == 0 then
+        -- Incluir pantalla de inicio
+    elseif GameState == 1 then
+        MetoeGroup:update(dt)
 
         Player:update(dt)
 
@@ -156,7 +173,7 @@ function love.update(dt)
             Player:reciveDano(v, dt)
 
             if Player.vidas <= 0 then
-                GameOver = true
+                GameState = 2
             end
         end
 
@@ -182,15 +199,15 @@ function love.update(dt)
             end
         end
 
+    elseif GameState == 2 then
     end
 end
 
 function love.draw()
     StarDraw()
-    if GameOver == true then
-        love.graphics.printf("GAME OVER",             GOFont, 0, altoPatalla/2 - 35, anchoPantalla, "center")
-        love.graphics.printf("Your Score: " .. Score, Fuente, 0, altoPatalla/2,      anchoPantalla, "center")
-    else
+    if GameState == 0 then
+        love.graphics.draw(Logo, anchoPantalla/2, 200, 0, 0.5,0.5, Logo:getWidth()/2, Logo:getHeight()/2)
+    elseif GameState == 1 then
 
         love.graphics.print("Score: " .. Score, Fuente, anchoPantalla - 100)
 
@@ -212,5 +229,8 @@ function love.draw()
 
         Player:drawLife()
 
+    elseif GameState == 2 then
+        love.graphics.printf("GAME OVER",             GOFont, 0, altoPatalla/2 - 35, anchoPantalla, "center")
+        love.graphics.printf("Your Score: " .. Score, Fuente, 0, altoPatalla/2,      anchoPantalla, "center")
     end
 end
