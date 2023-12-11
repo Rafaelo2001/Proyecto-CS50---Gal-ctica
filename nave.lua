@@ -15,6 +15,8 @@ function Nave:new(x, y, vidas, damage, speed)
     self.desgarroY = 0
 
     self.radioHitbox = self.ancho/2 - 10
+
+    LiveFont = love.graphics.newFont("assets/font/kenvector_future.ttf", 20)
 end
 
 function Nave:checkColision(e)
@@ -31,7 +33,6 @@ end
 
 function Nave:reciveDano(e, dt)
     if self:checkColision(e) then
-        print("nave-choca-meteoro")
         self.vidas = self.vidas - 1
     end
 end
@@ -44,6 +45,7 @@ function Nave:update(dt)
             self.x = self.x - self.speed * dt
         end
 
+    -- Movimiento vertical mas pequeño efecto visual
         if love.keyboard.isDown("s", "down") then
             self.y = self.y + 600 * dt
             self.desgarroX = -0.1
@@ -90,11 +92,12 @@ function Nave:drawLife()
     local middlebar = love.graphics.newImage("assets/nave/livebar-middle.png")
     local anchoM = middlebar:getWidth()
 
--- Barra de Vida
-    love.graphics.print("vida " .. self.vidas, 0,20)
-    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-start.png"), 30,20, 0, 1,1, 0,0, 0,0)
-    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-middle.png"), 30 + anchoI,20, 0, self.vidas/9,1, 0,0, 0,0)
-    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-end.png"), anchoM * self.vidas/9 + 30 + anchoI,20, 0, 1,1, 0,0, 0,0)
+    -- Barra de Vida
+    love.graphics.printf("Energy", LiveFont, 10,11, 500)
+    --love.graphics.printf("GAME OVER",             GOFont, 0, altoPatalla/2 - 35, anchoPantalla, "center")
+    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-start.png"), 120,10, 0, 1,1, 0,0, 0,0)
+    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-middle.png"), 120 + anchoI,10, 0, self.vidas/9,1, 0,0, 0,0)
+    love.graphics.draw(love.graphics.newImage("assets/nave/livebar-end.png"), anchoM * self.vidas/9 + 120 + anchoI,10, 0, 1,1, 0,0, 0,0)
 end
 
 function Nave:draw()

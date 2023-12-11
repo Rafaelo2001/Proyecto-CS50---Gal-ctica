@@ -7,6 +7,7 @@ function love.load()
     GameOver = false
     Class = require "librerias.classic"
 
+    require "librerias.estrellas"
     require "nave"
     require "bullet"
     require "enemigo"
@@ -18,6 +19,8 @@ function love.load()
     OrdenM = Orden()
     Score = 0
     Balas = {}
+
+    StarLoad()
 
     MaxMeteo = 3
     MeteoroList = {}
@@ -88,24 +91,7 @@ function love.load()
         , 25
     )
 
-    
-
-    -- tick.recur(
-    --     function ()
-    --         table.insert(CoinList, Coin(anchoPantalla + love.math.random(100,200), love.math.random(0, altoPatalla), "s"))
-    --     end
-    --     , 0.5
-    -- )
-
-     
---    for i = 1, maxCoin do
---         table.insert(CoinList, Coin(love.math.random(100, anchoPantalla - 50), love.math.random(50, altoPatalla - 50), "s"))
---     end
-
---     table.insert(CoinList, Coin(800, 300, "s"))
---     table.insert(CoinList, Coin(900, 350, "s"))
---      , Coin(850, 300, "s"), Coin(900, 300, "s"), Coin(950, 300, "s")
-
+    -- Fuentes
     Fuente = love.graphics.newFont("assets/font/kenvector_future.ttf")
     GOFont = love.graphics.newFont("assets/font/kenvector_future.ttf", 35)
 end
@@ -121,26 +107,25 @@ function love.keypressed(key)
         if #Balas < 11 then
             if key == "z" or key == "return" then
                 table.insert(Balas, Bullet(Player.x, Player.y, "l2"))
-                print("l2")
             end
         end
     elseif Score >= 3000  then
         if #Balas < 15 then
             if key == "z" or key == "return" then
                 table.insert(Balas, Bullet(Player.x, Player.y, "l3"))
-                print("l3")
             end
         end
     end
 end
 
 function love.update(dt)
+    tick.update(dt)
+    StarUpdate(dt)
 
     if GameOver == true then
         -- Al activarse esta funcion, dejamos de actualizar la logica
     else
 
-        tick.update(dt)
         Player:update(dt)
 
         -- Actualizamos la posicion de cada bala
@@ -201,14 +186,13 @@ function love.update(dt)
 end
 
 function love.draw()
+    StarDraw()
     if GameOver == true then
         love.graphics.printf("GAME OVER",             GOFont, 0, altoPatalla/2 - 35, anchoPantalla, "center")
         love.graphics.printf("Your Score: " .. Score, Fuente, 0, altoPatalla/2,      anchoPantalla, "center")
-
-        love.graphics.printf("This text is aligned right, and wraps when it gets too big.", 25, 25, 125, "right")
     else
 
-        love.graphics.print("Score: " .. Score, Fuente, 10)
+        love.graphics.print("Score: " .. Score, Fuente, anchoPantalla - 100)
 
         -- Dibujamos cada bala
         for i, v in ipairs(Balas) do
