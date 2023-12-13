@@ -49,5 +49,5 @@ end
 
 function Meteoro:draw()
     love.graphics.draw(self.imagen, self.x,self.y, self.rotacion, 1,1, self.ancho/2,self.alto/2)
-    love.graphics.circle("line", self.x,self.y, self.radioHitbox)
+    --love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end

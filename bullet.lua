@@ -32,11 +32,6 @@ function Bullet:new(x,y, type)
         self.rango = 900
         self.radioHitbox = self.ancho/2
     end
-
-    -- self.ancho = self.image:getWidth()
-    -- self.alto = self.image:getHeight()
-
-    -- self.radioHitbox = self.ancho/2
 end
 
 function Bullet:checkColision(e)
@@ -64,11 +59,4 @@ end
 
 function Bullet:draw()
     love.graphics.draw(self.image, self.x,self.y, math.pi/2, 1,1, self.ancho/2, self.alto/2)
-
-    if self.type == "l1" or self.type == "l2" then
-        love.graphics.circle("line", self.x + 5 + self.ancho*2, self.y, self.radioHitbox)
-
-    elseif self.type == "l3" then
-        love.graphics.circle("line", self.x, self.y, self.radioHitbox)
-    end
 end

@@ -112,8 +112,6 @@ function Nave:drawLife()
 end
 
 function Nave:draw()
-    love.graphics.print("x " .. self.x, self.x+50,self.y+50)
-    love.graphics.print("y " .. self.y, self.x+50,self.y+70)
     love.graphics.draw(
         self.skin,
         self.x,
@@ -124,8 +122,4 @@ function Nave:draw()
         self.alto/2,
         self.desgarroX,self.desgarroY
     )
-
-    -- Prototipo Hitbox (28 se resta de lado y lado, 14 para volverlo a centrar)
-    love.graphics.rectangle("line", self.x - self.alto / 2, self.y - self.ancho/2 + 14, self.alto,self.ancho-28)
-    love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end
