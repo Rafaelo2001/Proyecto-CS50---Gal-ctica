@@ -26,8 +26,6 @@ function StarLoad()
 
                 Estrellas2[min] = {x, y}
             end
-
-            print(#Estrellas2)
         end
     , 23)
 

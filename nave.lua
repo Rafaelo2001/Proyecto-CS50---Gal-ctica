@@ -17,6 +17,7 @@ function Nave:new(x, y, vidas, damage, speed)
     self.radioHitbox = self.ancho/2 - 10
 
     LiveFont = love.graphics.newFont("assets/font/kenvector_future.ttf", 20)
+    S_hit = love.audio.newSource("assets/sfx/sfx_lose.ogg", "static")
 end
 
 function Nave:checkColision(e)
@@ -33,7 +34,9 @@ end
 
 function Nave:reciveDano(e, dt)
     if self:checkColision(e) then
+        love.audio.stop(S_hit)
         self.vidas = self.vidas - 1
+        love.audio.play(S_hit)
     end
 end
 

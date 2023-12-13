@@ -12,12 +12,8 @@ function Enemigo:new(x, y, value, imagen)
     self.radioHitbox = self.ancho/2 - 5
 end
 
-
-
 function Enemigo:update()
-    
 end
 
 function Enemigo:draw()
-    -- love.graphics.draw(self.imagen, self.x,self.y)
 end

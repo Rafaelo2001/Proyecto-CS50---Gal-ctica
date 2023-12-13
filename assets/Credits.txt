@@ -1,0 +1,5 @@
+Game made by Ramón R. Bastardo M. for CS50x 2023.
+
+Assets:
+ - Assets and Sounds Efeccts by: Kenney (https://kenney.nl/)
+ - BGM by: HeatleyBros (https://www.youtube.com/@HeatleyBros)

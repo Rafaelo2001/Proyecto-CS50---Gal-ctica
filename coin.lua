@@ -34,5 +34,4 @@ end
 
 function Coin:draw()
     love.graphics.draw(self.imagen, self.x,self.y, 0, self.scalax,self.scalay, self.ancho/2,self.alto/2, 0,0)
-    -- love.graphics.circle("line", self.x,self.y, self.radioHitbox)
 end

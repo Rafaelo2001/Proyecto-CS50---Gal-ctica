@@ -11,15 +11,19 @@ local altoPatalla = love.graphics.getHeight()
     Velocidades = {50, 100, 150, 200, 300}
 
     function Orden:uno()
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,8)]))
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", "r"))
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 100, "s", MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 150, "s", MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 150, "s", "r"))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), 150, "s", MoveTypes[love.math.random(1,8)]))
     end
 
     function Orden:dos ()
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,5)], "r"))
-        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(50,250), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], "r"))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], "r"))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], "r"))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], "r"))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], "r"))
+        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,500), love.math.random(-250,altoPatalla+250), love.math.random(150,450), SizeTypes[love.math.random(1,5)], MoveTypes[love.math.random(1,8)]))
     end
 
     function Orden:Panel1()

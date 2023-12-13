@@ -5,6 +5,11 @@ local anchoPantalla = love.graphics.getWidth()
 local altoPatalla = love.graphics.getHeight()
 -- 720 x 600
 
+print("Made by Ramon R. Bastardo M. for CS50x 2023")
+print("Credits:")
+print("Assets and Sounds Efeccts by: Kenney (https://kenney.nl)")
+print("BGM by: HeatleyBros (https://www.youtube.com/@HeatleyBros)")
+
 function love.load()
     -- 0 - Start Screen
     -- 1 - Game Screen
@@ -24,6 +29,7 @@ function love.load()
     OrdenM = Orden()
     Score = 0
     Balas = {}
+    CoinList = {}
 
     StarLoad()
 
@@ -32,11 +38,6 @@ function love.load()
 
     SizeTypes = {"m", "mg", "b", "t", "s"}
     MoveTypes = {"r", "r", "r", "r", "r", "r", "d", "di"}
-
-
-
-    local maxCoin = 20
-    CoinList = {}
 
     -- Meteoros por esquivar
     MetoeGroup = tick.group()
@@ -91,6 +92,8 @@ function love.load()
                         table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,700), love.math.random(-250,altoPatalla+250), love.math.random(250,700), SizeTypes[love.math.random(1,5)], "r"))
                         table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,700), love.math.random(-250,altoPatalla+250), love.math.random(250,700), SizeTypes[love.math.random(1,5)], "r"))
                         table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,700), love.math.random(-250,altoPatalla+250), love.math.random(250,700), SizeTypes[love.math.random(1,5)], "r"))
+                        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,700), love.math.random(-250,altoPatalla+250), love.math.random(250,700), SizeTypes[love.math.random(1,5)], "r"))
+                        table.insert(MeteoroList, Meteoro(anchoPantalla + love.math.random(250,700), love.math.random(-250,altoPatalla+250), love.math.random(250,700), SizeTypes[love.math.random(1,5)], "r"))
                     end
                     ,
                     love.math.random(0.4,1.2)
@@ -103,16 +106,24 @@ function love.load()
     Fuente   = love.graphics.newFont("assets/font/kenvector_future.ttf")
     GOFont   = love.graphics.newFont("assets/font/kenvector_future.ttf", 35)
     LiveFont = love.graphics.newFont("assets/font/kenvector_future.ttf", 20)
+    CreditFont = love.graphics.newFont("assets/font/kenvector_future.ttf", 15)
 
     -- Imagenes
     Logo      = love.graphics.newImage("assets/main_logo.png")
     Arrow_key = love.graphics.newImage("assets/arrow_key.png")
-    Space_key = love.graphics.newImage("assets/space_key.png")
+    ASWD_key = love.graphics.newImage("assets/aswd_key.png")
     Z_key     = love.graphics.newImage("assets/z_key.png")
+    Enter_key     = love.graphics.newImage("assets/enter_key.png")
 
     -- Sonidos
     S_shoot1 = love.audio.newSource("assets/sfx/sfx_laser1.ogg", "static")
     S_shoot2 = love.audio.newSource("assets/sfx/sfx_laser2.ogg", "static")
+    S_hit    = love.audio.newSource("assets/sfx/sfx_lose.ogg", "static")
+    S_coin   = love.audio.newSource("assets/sfx/sfx_shieldUp.ogg", "static")
+
+    -- BGM
+    BGM_s1   = love.audio.newSource("assets/bgm/HeatleyBros-8_Bit_Hero.mp3", "stream")
+    BGM_s1:setVolume(0.22)
 end
 
 function love.keypressed(key)
@@ -154,8 +165,9 @@ function love.update(dt)
     StarUpdate(dt)
 
     if GameState == 0 then
-        -- Incluir pantalla de inicio
     elseif GameState == 1 then
+        love.audio.play(BGM_s1)
+
         MetoeGroup:update(dt)
 
         Player:update(dt)
@@ -196,8 +208,10 @@ function love.update(dt)
             c:update(dt)
 
             if Player:checkColision(c) then
+                love.audio.stop(S_coin)
                 Score = Score + c.value
                 table.remove(CoinList, i)
+                love.audio.play(S_coin)
             end
         end
 
@@ -215,22 +229,25 @@ function love.update(dt)
         end
 
     elseif GameState == 2 then
+        love.audio.stop(BGM_s1)
     end
 end
 
 function love.draw()
     StarDraw()
     if GameState == 0 then
-        love.graphics.printf("Made by Ramón R. Bastardo M. for CS50x 2023", Fuente, 0,5, anchoPantalla, "center")
+        love.graphics.printf("Made by Ramón R. Bastardo M. for CS50x 2023", CreditFont, 0,5, anchoPantalla, "center")
 
         love.graphics.draw(Logo, anchoPantalla/2, 200, 0, 0.5,0.5, Logo:getWidth()/2, Logo:getHeight()/2)
         love.graphics.printf('Press "SPACE" to start', LiveFont, 0, (3.4*altoPatalla)/6, anchoPantalla, "center")
 
-        love.graphics.draw(Arrow_key, 250, 440, 0, 3,3)
-        love.graphics.printf("Move ship", LiveFont, 255, 540, anchoPantalla, "left")
+        love.graphics.draw(Arrow_key, 80, 440, 0, 3,3)
+        love.graphics.draw(ASWD_key, 240, 440, 0, 3,3)
+        love.graphics.printf("Move ship", LiveFont, 165, 540, anchoPantalla, "left")
 
-        love.graphics.draw(Z_key, 470, 490, 0, 3,3)
-        love.graphics.printf("Shoot", LiveFont, 452, 540, anchoPantalla, "left")
+        love.graphics.draw(Z_key, 480, 485, 0, 3,3)
+        love.graphics.draw(Enter_key, 560, 440, 0, 3,3)
+        love.graphics.printf("Shoot", LiveFont, 510, 540, anchoPantalla, "left")
 
     elseif GameState == 1 then
         -- Dibujamos cada bala
@@ -264,10 +281,17 @@ function love.draw()
             love.graphics.setColor(1, 1, 1)
         end
         love.graphics.printf("Score: " .. Score, Fuente, anchoPantalla - 110, 40, anchoPantalla, "left")
+
     elseif GameState == 2 then
+        love.graphics.printf("Made by Ramón R. Bastardo M. for CS50x 2023", CreditFont, 0,5, anchoPantalla, "center")
+
         love.graphics.printf("GAME OVER",             GOFont, 0, altoPatalla/2 - 45, anchoPantalla, "center")
         love.graphics.printf("Your Score: " .. Score, Fuente, 0,      altoPatalla/2, anchoPantalla, "center")
 
         love.graphics.printf('Press "SPACE" to restart', LiveFont, 0, altoPatalla/2 + 50, anchoPantalla, "center")
+
+        love.graphics.printf("Credits:", LiveFont, 10, altoPatalla - 90, anchoPantalla, "left")
+        love.graphics.printf("Assets and Sounds Efeccts by: Kenney (https://kenney.nl)", CreditFont, 10, altoPatalla - 60, anchoPantalla, "left")
+        love.graphics.printf("BGM by: HeatleyBros (https://www.youtube.com/@HeatleyBros)", CreditFont, 10, altoPatalla - 40, anchoPantalla, "left")
     end
 end
