@@ -6,9 +6,14 @@ local altoPatalla = love.graphics.getHeight()
 -- 720 x 600
 
 print("Made by Ramon R. Bastardo M. for CS50x 2023")
+print("")
 print("Credits:")
-print("Assets and Sounds Efeccts by: Kenney (https://kenney.nl)")
-print("BGM by: HeatleyBros (https://www.youtube.com/@HeatleyBros)")
+print("- Assets and Sounds Efeccts by: Kenney (https://kenney.nl)")
+print("- BGM by: HeatleyBros (https://www.youtube.com/@HeatleyBros)")
+print("")
+print("Libraries:")
+print(" - Classic: https://github.com/rxi/classic")
+print(" - Tick: https://github.com/rxi/tick")
 
 function love.load()
     -- 0 - Start Screen

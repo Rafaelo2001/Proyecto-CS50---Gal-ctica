@@ -1,1 +1,3 @@
-# Proyecto CS50 - Galáctica
+# Galáctica
+#### Video Demo:  https://youtu.be/VArdc42wQVs
+#### Description:
