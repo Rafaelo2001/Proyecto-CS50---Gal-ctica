@@ -6,7 +6,7 @@ My project is about a space shooter video-game where you have to dodge or destro
 <hr>
 
 ### File list:
-* "Assets" folder
+* "assets" folder
 * "librerias" folder
 * main.lua
 * nave.lua
@@ -164,10 +164,149 @@ At the beginning of the file, we create a new class called ‘Enemigo’ using `
 ### `Enemigo:new(x, y, value, imagen)`
 
 Create a new "Enemigo" with the received parameters:
-- *x* and *y* represent the generation position.
-- *value* is the score value added when the "enemy" is destroyed.
-- *image* refers to the location of the "enemy's" skin within the game files.
+- **x** and **y** represent the generation position.
+- **value** is the score value added when the "enemy" is destroyed.
+- **imagen** (image) refers to the location of the "enemy's" skin within the game files.
 
 Additionally, this function calculates the radius size of the hitbox.
 
 The `Enemigo:update()` and `Enemigo:draw()` functions are empty and do not perform any actions. They are included in the code to maintain the basic structure of Love2D.
+
+
+## meteoro.lua
+
+In this file, meteors are generated to function as the main obstacles within the game.
+
+At the beginning of the file, we create a new child class of “Enemigo” called “Meteoro”: `Meteoro = Enemigo:extend()`
+
+### `Meteoro:new(x,y, speed, meteoro_type, movement_type)`
+
+This function creates a new Meteoro object with the following parameters:
+- **x** and **y** represent the generation position.
+- **speed** determines the meteor's movement speed on the screen.
+- **meteoro_type** specifies the type of meteor to generate, which in turn determines its appearance.
+- **movement_type** defines the type of movement the meteor will exhibit.
+
+
+The meteor types defined by _meteoro_type_ are as follows:
+- “**big**” or “**b**”: The largest type of meteor. It has **10 hit** points and a value of **300 points**.
+- “**medium**” or “**m**”: Medium-sized meteor. It has **2 hit** points and a value of **150 points**.
+- “**medium_gris**” or “**mg**”: Same size as “medium” but gray in color. It has **4 hit** points and a value of **150 points**.
+- “**small**” or “**s**”: Small-sized meteor. It has **1 hit** point and a value of **50 points**.
+- “**tiny**” or “**t**”: A tiny meteor. Also has **1 hit** point, but only **10 points** in value. 
+
+The *movement types* that a meteor can have are as follows:
+- “**recto**” (straight) or **"r"**: The meteor moves from right to left across the screen.
+- “**diagonal**” or “**d**”: The meteor moves from the upper right area to the lower left area of the screen.
+- “**diagonal inverso**” (inverse diagonal) or “**di**”: The meteor moves from the lower right area to the upper left area of the screen.
+
+This function then passes the remaining parameters to the `Meteoro.super.new()` function to complete the assignment of meteor object values.
+
+As an additional step, this function also calculates the _rotation_ that the meteor will have, ensuring that each one has a distinct appearance on the game screen. 
+
+
+### `Meteoro:update(dt)`
+
+This function handles updating the logic for each meteor: its movement (determined by *movement_type*) and rotation.
+
+### `Meteoro:draw()`
+
+This function handles drawing the meteors on the screen. 
+
+
+
+## coin.lua
+
+This file is responsible for generating the twinkling stars that, when collected, increase the player’s Score.
+
+Similar to previous files, this one begins by creating a new class called “Coin” using `Class:extend()` from **Classic.lua**.
+
+
+### `Coin:new(x, y, velocidad, type)`
+
+This function creates a new Coin object with the received parameters:
+
+- **x** and **y** represent its generation location.
+- **velocidad** (speed) determines the object’s movement speed on the screen.
+- **type** specifies the type of Coin to generate. There is only one type: “**s**”, with a value of **100 points**.
+
+Additionally, in this function, the hitbox radius of the object is assigned manually. Unlike how the radius was assigned for other objects (using the function `self.imagen:getWidth() / 2`), here the value is directly set in pixels. This adjustment is necessary because the object’s skin has excessive blank space around the image, resulting in a hitbox larger than what is visually displayed on the screen.
+
+
+### `Coin:update(dt)`
+This function updates the logic of the “coins”: Its movement across the screen and its pulsation.
+
+### `Coin:draw()`
+This function draws the collectible stars on the screen. 
+
+
+## meteorosDisplay.lua
+
+This file generates several sets of meteors and collectible stars to create the game layouts.
+
+At the beginning, it creates a new class called “Orden”.
+
+Next, it declares the variables “anchoPantalla” and “altoPantalla”’ which contain the values of the screen width and height respectively.
+
+Then, it calls the libraries from the files **enemigo.lua**, **meteoro.lua**, and **coin.lua**.
+
+This file contains several functions where meteors and collectible stars are inserted into an array located in **main.lua** (_meteoroList_ and _CoinList_). Each of these functions adds objects and their screen positions to the arrays:
+
+- From the function `Orden:Panel1()` to `Orden:Panel6()`, the order of meteors and collectible stars displayed on the screen during the first 25 seconds of the game is defined.
+
+- Subsequently, the functions `Orden:uno()` and `Orden:dos()` are used to randomly generate meteors across the entire screen, creating a “surviving as long as possible” scenario.
+
+
+
+## "assets" Folder
+
+This folder contains all the graphics and sounds used in the game:
+- Assets and Sounds Efeccts by: [Kenney](https://kenney.nl/)
+- BGM by: [HeatleyBros](https://www.youtube.com/@HeatleyBros)
+
+
+## "librerias" Folder
+
+This folder contains the external libraries used in the game’s code:
+
+- **Classic.lua**: Enables the creation of pseudoclasses in Lua.
+- **Tick.lua**: Provides better control over functions by offering a mechanism that essentially acts as a timer for their execution.
+
+Both of these functions were created by rxi. You can find them on [rxi’s GitHub](https://github.com/rxi).
+
+Furthermore, within this folder, there is another file responsible for generating the stars that appear in the game’s background: **estrellas.lua**.
+
+
+### estrellas.lua
+As previously mentioned, this file generates the stars for the game’s background.
+
+At the beginning of the file, the Tick library is called, and variables storing the screen width and height are declared.
+
+#### `StarLoad()`
+
+This function generates several arrays that will contain the stars. The first one, _Estrellas0_, is generated immediately at the beginning of the game, while the other two are generated after some time.
+
+Within each of the arrays, a specific number of stars are generated and assigned random positions on the screen.
+
+Additionally, the functions _Estrellas1_ and _Estrellas2_ are created within a recursive function (part of **tick.lua**), so that at regular intervals, random positions are reassigned to the stars. This ensures a continuous flow of stars on the screen: while one array of stars is being displayed, the other is already moving to take its place.
+
+
+#### `StarUpdate(dt)`
+
+This function updates the position of each star, and if one is beyond the visible space (`x < 0`), it removes it from the array.
+
+
+#### `StarDraw()`
+
+This function draws the stars from each array on the screen.
+
+
+<hr>
+
+
+That would be all for my project.
+
+
+
+
+ー Ramón R. Bastardo M.
